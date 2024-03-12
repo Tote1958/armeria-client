@@ -1,0 +1,16 @@
+@startuml Diagrama de secuencia
+
+' Ejemplo
+actor Cliente
+Cliente -> ArmaResource: Registrar arma
+ArmaResource -> ArmaResource: Validar datos
+ArmaResource -> ArmaService: Guardar arma
+ArmaService  -> ArmaRepository: Guardar arma
+database DB
+ArmaRepository -> DB: Persistir
+DB -> ArmaRepository: Persistido
+ArmaRepository -> ArmaService: Persistido
+ArmaService -> ArmaResource: Persistido
+ArmaResource -> Cliente: Persistido
+
+@enduml

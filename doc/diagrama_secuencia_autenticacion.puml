@@ -1,0 +1,21 @@
+@startuml Diagrama de secuencia Usuarioe
+
+' Ejemplo
+actor Usuario
+Usuario -> UsuarioAuthResource: Registrar Usuario
+UsuarioAuthResource -> UsuarioAuthResource: Validar datos
+UsuarioAuthResource -> UsuarioAuthService: Envia datos
+UsuarioAuthService -> UsuarioService: Busca datos por user_name
+UsuarioService -> UsuarioRepository: Busca datos por user_name
+database DB
+UsuarioRepository -> DB: Busca datos por user_name
+DB -> UsuarioRepository: Usuario encontrado (o no)
+UsuarioRepository -> UsuarioAuthService: Usuario encontrado (o no)
+UsuarioAuthService -> SecuritySercice: Envia password
+SecuritySercice -> SecuritySercice: Encripta password
+SecuritySercice -> UsuarioAuthService: Envia password encriptada  
+UsuarioAuthService -> UsuarioAuthService: Comparar con la clave de la DB 
+UsuarioAuthService -> UsuarioAuthResource: Usuario encontrado (o no)
+UsuarioAuthResource -> Usuario: Autenticacion exitosa (o no)
+
+@enduml

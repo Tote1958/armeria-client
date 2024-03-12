@@ -1,0 +1,19 @@
+@startuml Diagrama de secuencia Usuarioe
+
+' Ejemplo
+actor Usuario
+Usuario -> UsuarioResource: Registrar Usuario
+UsuarioResource -> UsuarioResource: Validar datos
+UsuarioResource -> UsuarioService: Envia datos
+UsuarioService -> SecurityService: Envia contraseña
+SecurityService -> SecurityService: Encriptar contraseña
+SecurityService -> UsuarioService: Envia contraseña encriptada
+UsuarioService  -> UsuarioRepository: Guardar Usuario
+database DB
+UsuarioRepository -> DB: Persistir
+DB -> UsuarioRepository: Persistido
+UsuarioRepository -> UsuarioService: Persistido
+UsuarioService -> UsuarioResource: Persistido
+UsuarioResource -> Usuario: Persistido
+
+@enduml

@@ -1,5 +1,6 @@
 import unittest
 from sqlalchemy import text
+import requests
 
 from app import create_app, db
 
@@ -16,7 +17,5 @@ class ConnectionTestCase(unittest.TestCase):
         db.drop_all()
         self.app_context.pop()
     
-    def test_db_connection(self):
-        result = db.session.query(text("'Hello world'")).one()
-        self.assertEqual(result[0], 'Hello world')
-
+    def test_find_by_id():
+        

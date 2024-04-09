@@ -17,3 +17,5 @@ NAME_DB = os.environ.get('NAME_DB')
 PORT_DB = os.environ.get('PORT_DB')
 
 FULL_URL_DB = f'postgresql://{USER_DB}:{PASS_DB}@{URL_DB}:{PORT_DB}/{NAME_DB}'
+
+#FULL_URL_DB = f'mariadb+pymysql://{USER_DB}:{PASS_DB}@{URL_DB}:{PORT_DB}/{NAME_DB}'  para maria db

@@ -1,6 +1,6 @@
 import unittest
 from flask import current_app
-from app import create_app, db
+from app import create_app, db, cache
 from app.services.client_service import Client, ClientService
 
 service = ClientService()
@@ -15,9 +15,10 @@ class TestApp(unittest.TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
+        cache.clear()
         self.app_context.pop()
 
-    def test_create(self):
+    def create_client(self):
         client = Client()
         client.name = 'Santino'
         client.code = '1234'
@@ -25,6 +26,10 @@ class TestApp(unittest.TestCase):
         client.email = 'santino@gmail.com'
         client.address = 'Sarmiento 321'
         client_db = service.create(client)
+        return client_db
+
+    def test_create(self):
+        client_db = self.create_client()
 
         self.assertGreaterEqual(client_db.id, 1)
         self.assertEqual(client_db.name, 'Santino')
@@ -32,15 +37,11 @@ class TestApp(unittest.TestCase):
         self.assertEqual(client_db.dni, '32123543')
         self.assertEqual(client_db.email, 'santino@gmail.com')
         self.assertEqual(client_db.address, 'Sarmiento 321')
+
+
         
     def test_find_by_id(self):
-        client = Client()
-        client.name = 'Santino'
-        client.code = '1234'
-        client.dni = '32123543'
-        client.email = 'santino@gmail.com'
-        client.address = 'Sarmiento 321'
-        client_db = service.create(client)
+        client_db = self.create_client()
         client = service.find_by_id(1)
         self.assertEqual(client.id, 1)
         self.assertEqual(client.name, 'Santino')
@@ -50,13 +51,7 @@ class TestApp(unittest.TestCase):
         self.assertEqual(client.address, 'Sarmiento 321')
         
     def test_find_by_name(self) -> list:
-        client = Client()
-        client.name = 'Santino'
-        client.code = '1234'
-        client.dni = '32123543'
-        client.email = 'santino@gmail.com'
-        client.address = 'Sarmiento 321'
-        client_db = service.create(client)
+        client_db = self.create_client()
         client = service.find_by_name('Santino')
         client = client[0]
         self.assertEqual(client.id, 1)
@@ -67,13 +62,7 @@ class TestApp(unittest.TestCase):
         self.assertEqual(client.address, 'Sarmiento 321')
     
     def test_find_by_email(self) -> Client:
-        client = Client()
-        client.name = 'Santino'
-        client.code = '1234'
-        client.dni = '32123543'
-        client.email = 'santino@gmail.com'
-        client.address = 'Sarmiento 321'
-        client_db = service.create(client)
+        client_db = self.create_client()
         client = service.find_by_email('santino@gmail.com')
         self.assertEqual(client.id, 1)
         self.assertEqual(client.name, 'Santino')
@@ -85,13 +74,7 @@ class TestApp(unittest.TestCase):
 
     
     def test_update(self) -> Client:
-        client = Client()
-        client.name = 'Santino'
-        client.code = '1234'
-        client.dni = '32123543'
-        client.email = 'santino@gmail.com'
-        client.address = 'Sarmiento 321'
-        client_db = service.create(client)
+        client_db = self.create_client()
         client = service.find_by_id(1)
         client.name = 'Pepito'
         client.code = '5432'
@@ -108,13 +91,7 @@ class TestApp(unittest.TestCase):
         
 
     def test_delete(self) -> Client:
-        client = Client()
-        client.name = 'Santino'
-        client.code = '1234'
-        client.dni = '32123543'
-        client.email = 'santino@gmail.com'
-        client.address = 'Sarmiento 321'
-        client_db = service.create(client)
+        client_db = self.create_client()
         service.delete(1)
         clients = service.find_all()
         self.assertEqual(len(clients), 0)

@@ -9,7 +9,7 @@ client_schema = ClientSchema()
 client = Blueprint('client', __name__)
 
 
-@client.route('/client/', methods=['GET'])
+@client.route('/', methods=['GET'])
 def index():
     list = service.find_all()
     result = client_schema_many.dump(list)
@@ -20,24 +20,21 @@ def index():
 
 @client.route('/id/<int:id>', methods=['GET'])
 def find_by_id(id):
-    response_builder = ResponseBuilder()
     response = client_schema.dump(service.find_by_id(id))
-    if response:
-        response_builder.add_message("Usuario encontrado").add_status_code(100).add_data(response)
-        return response_schema.dump((response_builder.build())), 200
-    else:
-        response_builder.add_message("No se encontro el usuario").add_status_code(400).add_data(
-            response)
-        return response_schema.dump((response_builder.build())), 400
+    resp = jsonify(response)
+    resp.status_code = 200
+    return resp
+
 
 
 
 @client.route('/client/create/', methods=['POST'])
 def create_client():
-    response_builder = ResponseBuilder()
     client = client_schema.load(request.json)
-    response_builder.add_message("Usuario creado").add_status_code(100).add_data(client_schema.dump(service.create(client)))
-    return response_schema.dump((response_builder.build())), 200
+    response = client_schema.dump(service.create(client))
+    resp = jsonify(response)
+    resp.status_code = 200
+    return resp
 
 
 @client.route('/client/search/', methods=['GET'])
@@ -71,14 +68,19 @@ def find_by_email(email):
 
 @client.route('/client/update/<int:id>', methods=['PUT'])
 def update_client(id):
-    response_builder = ResponseBuilder()
     client = request.json
-    response_builder.add_message("Usuario modificado").add_status_code(100).add_data(client_schema.dump(service.update(client, id)))
-    return response_schema.dump((response_builder.build())), 200
+    response = client_schema.dump(service.update(client, id))
+    resp = jsonify(response)
+    resp.status_code = 200
+    return resp
+
+
 
 @client.route('/client/delete/<int:id>', methods=['DELETE'])
 def delete_client(id):
-    response_builder = ResponseBuilder()
-    response_builder.add_message('Usuario eliminado.').add_status_code(200).add_data(client_schema.dump(service.delete(id)))
-    return response_schema.dump(response_builder.build()), 200
+    response = client_schema.dump(service.delete(id))
+    resp = jsonify(response)
+    resp.status_code = 200
+    return resp
+
     

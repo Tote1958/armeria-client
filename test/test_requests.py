@@ -28,4 +28,5 @@ class ConnectionTestCase(unittest.TestCase):
         response = client.get('http://localhost:5000/api/v1/')
         self.assertEqual(response.status_code, 200)
     
-    
+if __name__ == '__main__':
+    unittest.main()

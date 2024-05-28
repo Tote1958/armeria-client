@@ -14,7 +14,7 @@ def create_app():
 
     db.init_app(app)
     ma.init_app(app)
-    cache.init_app(app, config={'CACHE_TYPE': 'RedisCache','CACHE_DEFAULT_TIMEOUT':300, 'CACHE_REDIS_HOST':'localhost','CACHE_REDIS_PORT':'6379','CACHE_REDIS_DB':'0', 'CACHE_REDIS_PASSWORD':'santino1234', 'CACHE_KEY_PREFIX':'orquestador_'})
+    cache.init_app(app, config={'CACHE_TYPE': 'RedisCache','CACHE_DEFAULT_TIMEOUT':300, 'CACHE_REDIS_HOST':'redis.um.localhost','CACHE_REDIS_PORT':'6379','CACHE_REDIS_DB':'0', 'CACHE_REDIS_PASSWORD':'santino1234', 'CACHE_KEY_PREFIX':'armeria-client_'})
     
     
     from app.controllers import client

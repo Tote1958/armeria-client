@@ -9,7 +9,7 @@ client_schema = ClientSchema()
 client = Blueprint('client', __name__)
 
 
-@client.route('/', methods=['GET'])
+@client.route('/client/', methods=['GET'])
 def index():
     list = service.find_all()
     result = client_schema_many.dump(list)
@@ -18,7 +18,7 @@ def index():
     return resp
 
 
-@client.route('/id/<int:id>', methods=['GET'])
+@client.route('/client/id/<int:id>', methods=['GET'])
 def find_by_id(id):
     response = client_schema.dump(service.find_by_id(id))
     resp = jsonify(response)
@@ -37,34 +37,25 @@ def create_client():
     return resp
 
 
-@client.route('/client/search/', methods=['GET'])
+@client.route('/client/name/', methods=['GET'])
 def find_by_name():
     name = request.args.get('name')
-    response_builder = ResponseBuilder()
+
     response = client_schema_many.dump(service.find_by_name(name))
+    resp = jsonify(response)
+    resp.status_code = 200
+    return resp
     if response:
         response_builder.add_message("Nombre encontrado").add_status_code(100).add_data({'clients': response})
-        return response_schema.dump((response_builder.build())), 200
-    else:
-        response_builder.add_message("No se encontro el nombre").add_status_code(400).add_data(
-            response)
-        return response_schema.dump((response_builder.build())), 400
+
 
 
 @client.route('/client/email/<string:email>', methods=['GET'])
 def find_by_email(email):
-    response_builder = ResponseBuilder()
     response = client_schema.dump(service.find_by_email(email))
-    if response:
-        response_builder.add_message("Email encontrado").add_status_code(100).add_data(
-            response)
-        # Preguntar si esta bien esta forma, esta forma anda
-        return response_schema.dump((response_builder.build())), 200
-    else:
-        response_builder.add_message("No se encontro el email").add_status_code(400).add_data(
-            response)
-        return response_schema.dump((response_builder.build())), 400
-
+    resp = jsonify(response)
+    resp.status_code = 200
+    return resp
 
 @client.route('/client/update/<int:id>', methods=['PUT'])
 def update_client(id):

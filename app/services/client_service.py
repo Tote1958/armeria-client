@@ -18,6 +18,10 @@ class ClientService:
         return self.__repo.find_by_id(id)
 
     def find_by_name(self, name) -> list:
+        client = cache.get(id)
+        if client == None:
+            client = self.__repo.find_by_id(id)
+            cache.set(client.id, client, timeout=50)
         return self.__repo.find_by_name(name)
     
     def find_by_email(self, email) -> Client:
@@ -29,10 +33,14 @@ class ClientService:
         return client
     
     def update(self, dto, id: int) -> Client:
-        return self.__repo.update(dto, id)
+        client = self.__repo.update(dto, id)
+        cache.set(client.id, client, timeout=50)   
+        return client
     
     def delete(self, id: int) -> Client:
-        return self.__repo.delete(id)
+        client = self.__repo.delete(id)
+        cache.set(client.id, client, timeout=0)   
+        return client
 
     
 

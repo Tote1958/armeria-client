@@ -12,4 +12,7 @@ psycopg2-binary==2.9.7
 saga_py == 1.1.0
 tenacity==8.2.3 #se usa para reintentar
 Flask-Caching==2.1.0 #cache de objetos
-redis==5.0.3 
+redis==5.0.3
+Mako==1.3.5
+alembic==1.13.1
+flask-migrate==4.0.7

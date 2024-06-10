@@ -5,7 +5,7 @@ from app.services.client_service import Client, ClientService
 
 service = ClientService()
 
-class TestApp(unittest.TestCase):
+class TestClient(unittest.TestCase):
     def setUp(self):
         self.app = create_app()
         self.app_context = self.app.app_context()
@@ -75,12 +75,8 @@ class TestApp(unittest.TestCase):
     
     def test_update(self) -> Client:
         client_db = self.create_client()
-        client = service.find_by_id(1)
-        client.name = 'Pepito'
-        client.code = '5432'
-        client.dni = '44555666'
-        client.email = 'pepito@gmail.com'
-        client.address = 'Peru 444'
+        dto = {"name": "Pepito", "code":"5432", "dni":"44555666", "email":"pepito@gmail.com","address":"Peru 444"}
+        client = service.update(dto, 1)
         result = service.find_by_id(1)
         self.assertEqual(result.id, 1)
         self.assertEqual(result.name, 'Pepito')

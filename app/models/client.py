@@ -1,5 +1,5 @@
 from __future__ import annotations
-from app.config.database import db
+from app import db
 from sqlalchemy.ext.hybrid import hybrid_property
 from dataclasses import dataclass
 

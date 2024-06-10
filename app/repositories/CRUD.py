@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from app.config.database import db
+from app import db
 
 
 class Create(ABC):

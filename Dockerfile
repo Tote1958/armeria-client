@@ -22,4 +22,4 @@ RUN pip install gevent gunicorn==22.0.0
 
 EXPOSE 5000
 
-CMD ["gunicorn", "--workers", "1", "--log-level", "INFO", "--bind", "0.0.0.0:5000", "app:app"]
+CMD ["gunicorn", "--workers", "1", "--log-level", "INFO", "--bind", "0.0.0.0:5000", "app:create_app()"]

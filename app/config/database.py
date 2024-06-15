@@ -8,6 +8,14 @@ from flask_migrate import Migrate
 basedir = os.path.abspath(Path(__file__).parents[2])
 load_dotenv(os.path.join(basedir, '.env'))
 
+USER_DB = os.environ.get('USER_DB')
+PASS_DB = os.environ.get('PASS_DB')
+URL_DB = os.environ.get('URL_DB')
+NAME_DB = os.environ.get('NAME_DB')
+PORT_DB = os.environ.get('PORT_DB')
+
+PROD_DATABASE_URI = f'postgresql://{USER_DB}:{PASS_DB}@{URL_DB}:{PORT_DB}/{NAME_DB}'
+DEV_DATABASE_URI = f'postgresql://{USER_DB}:{PASS_DB}@localhost:{PORT_DB}/{NAME_DB}'
 
 class Config(object):
     TESTING = False
@@ -23,7 +31,8 @@ class DevelopmentConfig(Config):
     TESTING = True
     DEBUG = True
     FLASK_ENV = 'development'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URI')
+    SQLALCHEMY_DATABASE_URI = DEV_DATABASE_URI
+
 
 
 class ProductionConfig(Config):
@@ -31,7 +40,7 @@ class ProductionConfig(Config):
     DEBUG = False
     TESTING = False
     SQLALCHEMY_RECORD_QUERIES = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get('PROD_DATABASE_URI')
+    SQLALCHEMY_DATABASE_URI = PROD_DATABASE_URI
 
     @classmethod
     def init_app(cls, app):
@@ -47,12 +56,5 @@ def factory(app):
     return configuration[app];
 
 
-USER_DB = os.environ.get('USER_DB') 
-PASS_DB = os.environ.get('PASS_DB')
-URL_DB = os.environ.get('URL_DB')
-NAME_DB = os.environ.get('NAME_DB')
-PORT_DB = os.environ.get('PORT_DB')
 
-PROD_DATABASE_URI = f'postgresql://{USER_DB}:{PASS_DB}@{URL_DB}:{PORT_DB}/{NAME_DB}'
-DEV_DATABASE_URI = f'postgresql://{USER_DB}:{PASS_DB}@localhost:{PORT_DB}/{NAME_DB}'
 #FULL_URL_DB = f'mariadb+pymysql://{USER_DB}:{PASS_DB}@{URL_DB}:{PORT_DB}/{NAME_DB}'  para maria db

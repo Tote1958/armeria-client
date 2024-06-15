@@ -1,7 +1,7 @@
 services:
     armeria-client:
     #container_name: micro1  no tiene que estar porque no se puede escalar
-        image: msclient:v1.0.0
+        image: msclient:v2.0.0
         networks:
             mired:
                 aliases: #Es para cuando quiera encontrar a un microservicio que se ejecute. Le agrego un nombre a una ip

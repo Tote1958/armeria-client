@@ -53,7 +53,6 @@ class TestClient(unittest.TestCase):
     def test_find_by_name(self) -> list:
         client_db = self.create_client()
         client = service.find_by_name('Santino')
-        client = client[0]
         self.assertEqual(client.id, 1)
         self.assertEqual(client.name, 'Santino')
         self.assertEqual(client.code, '1234')
